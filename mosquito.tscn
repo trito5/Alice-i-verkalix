@@ -1,0 +1,142 @@
+[gd_scene load_steps=23 format=2]
+
+[ext_resource path="res://gfx/mosquito.png" type="Texture" id=1]
+[ext_resource path="res://hurtbox.tscn" type="PackedScene" id=2]
+[ext_resource path="res://CollisionShape2D.gd" type="Script" id=3]
+[ext_resource path="res://mosquito.gd" type="Script" id=4]
+[ext_resource path="res://audio/powerup1.wav" type="AudioStream" id=5]
+[ext_resource path="res://gfx/mosquito_blood.png" type="Texture" id=6]
+[ext_resource path="res://hitbox.tscn" type="PackedScene" id=7]
+[ext_resource path="res://audio/nope.wav" type="AudioStream" id=8]
+
+[sub_resource type="AtlasTexture" id=1]
+atlas = ExtResource( 1 )
+region = Rect2( 0, 0, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=2]
+atlas = ExtResource( 1 )
+region = Rect2( 16, 0, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=3]
+atlas = ExtResource( 6 )
+region = Rect2( 0, 0, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=4]
+atlas = ExtResource( 6 )
+region = Rect2( 16, 0, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=5]
+atlas = ExtResource( 6 )
+region = Rect2( 32, 0, 16, 16 )
+
+[sub_resource type="SpriteFrames" id=6]
+animations = [ {
+"frames": [ SubResource( 1 ), SubResource( 2 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 3 ), SubResource( 4 ), SubResource( 5 ), null ],
+"loop": false,
+"name": "die",
+"speed": 5.0
+} ]
+
+[sub_resource type="CapsuleShape2D" id=7]
+radius = 2.61946
+height = 2.84324
+
+[sub_resource type="CapsuleShape2D" id=8]
+radius = 5.2415
+height = 5.37344
+
+[sub_resource type="AtlasTexture" id=9]
+atlas = ExtResource( 6 )
+region = Rect2( 0, 0, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=10]
+atlas = ExtResource( 6 )
+region = Rect2( 16, 0, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=11]
+atlas = ExtResource( 6 )
+region = Rect2( 32, 0, 16, 16 )
+
+[sub_resource type="SpriteFrames" id=12]
+animations = [ {
+"frames": [ SubResource( 9 ), SubResource( 10 ), SubResource( 11 ), null ],
+"loop": false,
+"name": "splash",
+"speed": 5.0
+} ]
+
+[sub_resource type="CircleShape2D" id=13]
+radius = 38.682
+
+[sub_resource type="CapsuleShape2D" id=14]
+radius = 3.6923
+height = 4.27052
+
+[node name="mosquito" type="KinematicBody2D"]
+collision_layer = 16
+script = ExtResource( 4 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+frames = SubResource( 6 )
+playing = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( -1.33484, 0 )
+rotation = 1.5708
+shape = SubResource( 7 )
+
+[node name="mosquito_hurtbox" parent="CollisionShape2D" instance=ExtResource( 2 )]
+collision_layer = 8
+collision_mask = 4
+
+[node name="CollisionShape2D" parent="CollisionShape2D/mosquito_hurtbox" index="0"]
+position = Vector2( -3.64673e-08, -0.834274 )
+shape = SubResource( 8 )
+script = ExtResource( 3 )
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 5 )
+
+[node name="AnimatedBlood" type="AnimatedSprite" parent="."]
+visible = false
+frames = SubResource( 12 )
+animation = "splash"
+speed_scale = 4.0
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 24
+collision_mask = 6
+
+[node name="CollisionMosquitoChase" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource( 13 )
+
+[node name="hitbox" parent="." instance=ExtResource( 7 )]
+collision_layer = 8
+collision_mask = 2
+
+[node name="CollisionShape2D" parent="hitbox" index="0"]
+position = Vector2( -0.631386, -0.280617 )
+rotation = 1.5708
+shape = SubResource( 14 )
+
+[node name="AudioNope" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 8 )
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 2.0
+[connection signal="area_entered" from="CollisionShape2D/mosquito_hurtbox" to="." method="_on_hurtbox_area_entered"]
+[connection signal="animation_finished" from="AnimatedBlood" to="." method="_on_AnimatedBlood_animation_finished"]
+[connection signal="body_entered" from="Area2D" to="." method="_on_Area2D_body_entered"]
+[connection signal="body_exited" from="Area2D" to="." method="_on_Area2D_body_exited"]
+[connection signal="body_entered" from="hitbox" to="." method="_on_hitbox_body_entered"]
+[connection signal="body_exited" from="hitbox" to="." method="_on_hitbox_body_exited"]
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
+
+[editable path="CollisionShape2D/mosquito_hurtbox"]
+
+[editable path="hitbox"]

@@ -1,0 +1,63 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Hearts.gd" type="Script" id=1]
+[ext_resource path="res://gfx/heart.png" type="Texture" id=2]
+[ext_resource path="res://gfx/heart_grey.png" type="Texture" id=3]
+[ext_resource path="res://audio/berries.wav" type="AudioStream" id=4]
+
+[node name="Hearts" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="EmptyHeart1" type="Sprite" parent="."]
+position = Vector2( 4, 4 )
+texture = ExtResource( 3 )
+
+[node name="EmptyHeart2" type="Sprite" parent="."]
+position = Vector2( 13, 4 )
+texture = ExtResource( 3 )
+
+[node name="EmptyHeart3" type="Sprite" parent="."]
+position = Vector2( 22, 4 )
+texture = ExtResource( 3 )
+
+[node name="Heart1" type="Sprite" parent="."]
+position = Vector2( 4, 4 )
+texture = ExtResource( 2 )
+
+[node name="Heart2" type="Sprite" parent="."]
+position = Vector2( 13, 4 )
+texture = ExtResource( 2 )
+
+[node name="Heart3" type="Sprite" parent="."]
+position = Vector2( 22, 4 )
+texture = ExtResource( 2 )
+
+[node name="GreyHearts" type="TextureRect" parent="."]
+visible = false
+margin_right = 27.0
+margin_bottom = 8.0
+texture = ExtResource( 3 )
+expand = true
+stretch_mode = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RedHearts" type="TextureRect" parent="."]
+visible = false
+margin_right = 27.0
+margin_bottom = 8.0
+texture = ExtResource( 2 )
+expand = true
+stretch_mode = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 4 )

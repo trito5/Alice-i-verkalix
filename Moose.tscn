@@ -1,0 +1,140 @@
+[gd_scene load_steps=21 format=2]
+
+[ext_resource path="res://gfx/moose.png" type="Texture" id=1]
+[ext_resource path="res://hitbox.tscn" type="PackedScene" id=2]
+[ext_resource path="res://hurtbox.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Moose.gd" type="Script" id=4]
+[ext_resource path="res://gfx/mosquito_blood.png" type="Texture" id=5]
+[ext_resource path="res://audio/enemy_hit3.wav" type="AudioStream" id=6]
+[ext_resource path="res://audio/nope.wav" type="AudioStream" id=7]
+
+[sub_resource type="AtlasTexture" id=1]
+atlas = ExtResource( 1 )
+region = Rect2( 0, 0, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=2]
+atlas = ExtResource( 1 )
+region = Rect2( 16, 0, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=3]
+atlas = ExtResource( 1 )
+region = Rect2( 32, 0, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=4]
+atlas = ExtResource( 1 )
+region = Rect2( 48, 0, 16, 16 )
+
+[sub_resource type="SpriteFrames" id=5]
+animations = [ {
+"frames": [ SubResource( 1 ), SubResource( 2 ), SubResource( 3 ), SubResource( 4 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[sub_resource type="AtlasTexture" id=6]
+atlas = ExtResource( 5 )
+region = Rect2( 0, 0, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=7]
+atlas = ExtResource( 5 )
+region = Rect2( 16, 0, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=8]
+atlas = ExtResource( 5 )
+region = Rect2( 32, 0, 16, 16 )
+
+[sub_resource type="SpriteFrames" id=9]
+animations = [ {
+"frames": [ SubResource( 6 ), SubResource( 7 ), SubResource( 8 ), null ],
+"loop": false,
+"name": "default",
+"speed": 5.0
+} ]
+
+[sub_resource type="CapsuleShape2D" id=10]
+radius = 2.02353
+height = 4.60471
+
+[sub_resource type="CapsuleShape2D" id=11]
+radius = 5.85976
+height = 0.0
+
+[sub_resource type="CapsuleShape2D" id=12]
+radius = 10.2824
+height = 2.00925
+
+[sub_resource type="CircleShape2D" id=13]
+radius = 28.867
+
+[node name="Moose" type="KinematicBody2D"]
+collision_layer = 16
+collision_mask = 65
+script = ExtResource( 4 )
+
+[node name="AnimatedMoose" type="AnimatedSprite" parent="."]
+position = Vector2( 0, -7 )
+frames = SubResource( 5 )
+frame = 3
+playing = true
+
+[node name="AnimatedBlood" type="AnimatedSprite" parent="."]
+visible = false
+position = Vector2( 0, -5.42728 )
+frames = SubResource( 9 )
+speed_scale = 4.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 2, -2 )
+rotation = 1.5708
+shape = SubResource( 10 )
+
+[node name="hitbox" parent="." instance=ExtResource( 2 )]
+collision_layer = 8
+collision_mask = 2
+
+[node name="CollisionShape2D" parent="hitbox" index="0"]
+position = Vector2( 0.353955, -5.78123 )
+shape = SubResource( 11 )
+
+[node name="hurtbox" parent="." instance=ExtResource( 3 )]
+collision_layer = 8
+collision_mask = 6
+
+[node name="CollisionShape2D" parent="hurtbox" index="0"]
+position = Vector2( 4.08292e-06, -6.37116 )
+rotation = 1.5708
+shape = SubResource( 12 )
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 3.0
+autostart = true
+
+[node name="AudioHit" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 6 )
+volume_db = -8.565
+
+[node name="AudioNope" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 7 )
+
+[node name="huntbox" type="Area2D" parent="."]
+collision_layer = 16
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="huntbox"]
+position = Vector2( -1.41581, -6.96107 )
+shape = SubResource( 13 )
+
+[node name="TimerAttack" type="Timer" parent="."]
+wait_time = 2.0
+[connection signal="body_entered" from="hitbox" to="." method="_on_hitbox_body_entered"]
+[connection signal="body_exited" from="hitbox" to="." method="_on_hitbox_body_exited"]
+[connection signal="area_entered" from="hurtbox" to="." method="_on_hurtbox_area_entered"]
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
+[connection signal="body_entered" from="huntbox" to="." method="_on_huntbox_body_entered"]
+[connection signal="body_exited" from="huntbox" to="." method="_on_huntbox_body_exited"]
+[connection signal="timeout" from="TimerAttack" to="." method="_on_TimerAttack_timeout"]
+
+[editable path="hitbox"]
+
+[editable path="hurtbox"]
