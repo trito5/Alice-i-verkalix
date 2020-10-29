@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/take3.wav-7e1ff3c4deec5064cf2e11d669900b6f.sample"
+
+[deps]
+
+source_file="res://audio/take3.wav"
+dest_files=[ "res://.import/take3.wav-7e1ff3c4deec5064cf2e11d669900b6f.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

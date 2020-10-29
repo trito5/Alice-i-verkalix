@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/Bear.ogg-fd835f7cc9998a564db5e586c9d12909.oggstr"
+
+[deps]
+
+source_file="res://audio/Bear.ogg"
+dest_files=[ "res://.import/Bear.ogg-fd835f7cc9998a564db5e586c9d12909.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0
